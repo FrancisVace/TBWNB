@@ -6,19 +6,7 @@ public class Bucket : MonoBehaviour, IInteractable
 
     [SerializeField] private bool _full;
     [SerializeField] private int _travel;
-    [SerializeField] private GameObject _otherEnd;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private GameObject _otherEnd, _extraRope, _otherExtraRope;
     
     public void Interact(Element element)
     {
@@ -41,6 +29,7 @@ public class Bucket : MonoBehaviour, IInteractable
         _full = false;
         transform.position += Vector3.up * _travel;
         _otherEnd.transform.position += Vector3.down * _travel;
+        UpdateRope();
     }
 
     private void OnWater()
@@ -49,5 +38,12 @@ public class Bucket : MonoBehaviour, IInteractable
         _full = true;
         transform.position += Vector3.down * _travel;
         _otherEnd.transform.position += Vector3.up * _travel;
+        UpdateRope();
+    }
+
+    private void UpdateRope()
+    {
+        _extraRope.SetActive(_full);
+        _otherExtraRope.SetActive(!_full);
     }
 }
