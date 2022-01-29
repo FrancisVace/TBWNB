@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public static Movement instance;
 
     [SerializeField] private LayerMask _platformLayers, _solidLayers, _interactableLayers, _flipLayers;
 
@@ -13,6 +14,12 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private Element _element;
     [SerializeField] private SpriteRenderer _sr;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        if (instance != this) Destroy(gameObject);
+    }
 
 
     void Update()
