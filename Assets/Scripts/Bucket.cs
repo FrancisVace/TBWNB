@@ -6,7 +6,7 @@ public class Bucket : MonoBehaviour, IInteractable
 
     [SerializeField] private bool _full;
     [SerializeField] private int _travel;
-    [SerializeField] private GameObject _otherEnd, _extraRope, _otherExtraRope;
+    [SerializeField] private GameObject _otherEnd, _extraRope, _otherExtraRope, _redBucket, _blueBucket;
     
     public void Interact(Element element)
     {
@@ -45,5 +45,7 @@ public class Bucket : MonoBehaviour, IInteractable
     {
         _extraRope.SetActive(_full);
         _otherExtraRope.SetActive(!_full);
+        _redBucket.SetActive(!_full);
+        _blueBucket.SetActive(_full);
     }
 }
