@@ -9,20 +9,24 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask _platformLayers, _solidLayers, _interactableLayers, _flipLayers;
 
     [SerializeField] private float _actionCooldown;
-    private bool actionsRestricted;
+    private bool _actionsRestricted, _inputRestricted;
 
     [SerializeField] private Element _element;
-    private SpriteRenderer _sr;
-
-    private void Start()
-    {
-        _sr = GetComponent<SpriteRenderer>();
-    }
+    [SerializeField] private SpriteRenderer _sr;
 
 
     void Update()
     {
-        if (actionsRestricted) return;
+        if (_inputRestricted)
+        {
+            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) < 0.25f
+                && Mathf.Abs(Input.GetAxisRaw("Horizontal")) < 0.25f)
+            {
+                _inputRestricted = false;
+            }
+            return;
+        }
+        if (_actionsRestricted) return;
         if (Input.GetAxisRaw("Vertical") > 0.5f)
         {
             if (CheckDirection(Vector2.up, _platformLayers))
@@ -73,7 +77,7 @@ public class Movement : MonoBehaviour
 
     private void PostAction(bool flip = false)
     {
-        actionsRestricted = true;
+        _inputRestricted = true;
         if (flip)
         {
             switch (_element)
@@ -90,19 +94,26 @@ public class Movement : MonoBehaviour
                     throw new ArgumentOutOfRangeException();
             }
         }
-        Invoke(nameof(TryAllowAction), _actionCooldown);
-    }
 
-    private void TryAllowAction()
-    {
-        if (!CheckDirection(Vector2.down, _solidLayers | _platformLayers))
+        if (Grounded())
         {
-            transform.position += Vector3.down;
-            PostAction();
+            _actionsRestricted = false;
         }
         else
         {
-            actionsRestricted = false;
+            _actionsRestricted = true;
+            Invoke(nameof(Fall), _actionCooldown);
         }
+    }
+
+    private void Fall()
+    {
+        transform.position += Vector3.down;
+        PostAction();
+    }
+
+    private bool Grounded()
+    {
+        return CheckDirection(Vector2.down, _solidLayers | _platformLayers);
     }
 }
