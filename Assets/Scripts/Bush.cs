@@ -7,18 +7,17 @@ public class Bush : MonoBehaviour, IInteractable
 
     [SerializeField] private GameObject _bushPrefab;
     [SerializeField] private LayerMask _solidLayers, _bushLayers;
-    
-    private Coroutine _staggeredUpdate;
-    // Start is called before the first frame update
-    void Start()
-    {
-        _staggeredUpdate = StartCoroutine(StaggeredUpdate());
-    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // y check to prevent infinite loop
+        while(transform.position.y > -100 && !Physics2D.OverlapPoint(
+                  transform.position + Vector3.down, 
+                  _solidLayers | _bushLayers))
+        {
+            transform.position += Vector3.down;
+        }
     }
 
     public void Interact(Element element)
@@ -38,7 +37,6 @@ public class Bush : MonoBehaviour, IInteractable
 
     private void OnFire()
     {
-        StopCoroutine(_staggeredUpdate);
         Destroy(gameObject);
     }
 
@@ -55,19 +53,5 @@ public class Bush : MonoBehaviour, IInteractable
         var bush = Physics2D.OverlapPoint(transform.position + Vector3.up, _bushLayers);
         if (bush) return bush.GetComponent<Bush>()?.CheckForSpaceAbove();
         return transform.position + Vector3.up;
-    }
-    
-    public IEnumerator StaggeredUpdate()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(0.1f);
-            if (!Physics2D.OverlapPoint(
-                    transform.position + Vector3.down, 
-                    _solidLayers | _bushLayers))
-            {
-                transform.position += Vector3.down;
-            }
-        }
     }
 }
