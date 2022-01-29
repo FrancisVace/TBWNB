@@ -13,7 +13,9 @@ public class Movement : MonoBehaviour
     private bool _actionsRestricted, _inputRestricted;
 
     [SerializeField] private Element _element;
-    [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] private Animator _foxAnim;
+
+    private bool _facingRight = true;
 
     private void Awake()
     {
@@ -52,11 +54,13 @@ public class Movement : MonoBehaviour
         }
         if (Input.GetAxisRaw("Horizontal") < -0.5f)
         {
-            TrySideways(Vector3.left);
+            if (CheckFacing(false))
+                TrySideways(Vector3.left);
         }
         if (Input.GetAxisRaw("Horizontal") > 0.5f)
         {
-            TrySideways(Vector3.right);
+            if (CheckFacing(true))
+                TrySideways(Vector3.right);
         }
     }
 
@@ -82,6 +86,18 @@ public class Movement : MonoBehaviour
         return Physics2D.Raycast(transform.position, dir, 1f, layerMask);
     }
 
+    private bool CheckFacing(bool faceRight)
+    {
+        _inputRestricted = true;
+        if (faceRight == _facingRight) return true;
+        var transform1 = transform;
+        var localScale = transform1.localScale;
+        localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+        transform1.localScale = localScale;
+        _facingRight = faceRight;
+        return false;
+    }
+
     private void PostAction(bool flip = false)
     {
         _inputRestricted = true;
@@ -91,11 +107,11 @@ public class Movement : MonoBehaviour
             {
                 case Element.FIRE:
                     _element = Element.WATER;
-                    _sr.color = Color.cyan;
+                    _foxAnim.SetTrigger("Water");
                     break;
                 case Element.WATER:
                     _element = Element.FIRE;
-                    _sr.color = Color.yellow;
+                    _foxAnim.SetTrigger("Fire");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -104,7 +120,7 @@ public class Movement : MonoBehaviour
 
         if (Grounded())
         {
-            _actionsRestricted = false;
+            _actionsRestricted = flip;
         }
         else
         {
@@ -122,5 +138,10 @@ public class Movement : MonoBehaviour
     private bool Grounded()
     {
         return CheckDirection(Vector2.down, _solidLayers | _platformLayers);
+    }
+
+    public void AllowActions()
+    {
+        _actionsRestricted = false;
     }
 }
