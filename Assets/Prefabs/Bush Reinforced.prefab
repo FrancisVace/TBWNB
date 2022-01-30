@@ -77,11 +77,12 @@ MonoBehaviour:
   _bushPrefab: {fileID: 3719853733944773630, guid: e163e99ccc815104cb9583a7f82322c3, type: 3}
   _solidLayers:
     serializedVersion: 2
-    m_Bits: 3072
+    m_Bits: 4197376
   _bushLayers:
     serializedVersion: 2
     m_Bits: 1048576
   _reinforced: 1
+  _restingOn: {fileID: 0}
 --- !u!1001 &1239918488224076541
 PrefabInstance:
   m_ObjectHideFlags: 0
