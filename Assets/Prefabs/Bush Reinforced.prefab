@@ -74,7 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7132892d11a58ab469de7054f7e4a8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bushPrefab: {fileID: 3719853733944773630, guid: e163e99ccc815104cb9583a7f82322c3, type: 3}
+  _bushPrefab:
+  - {fileID: 3719853733944773630, guid: e163e99ccc815104cb9583a7f82322c3, type: 3}
+  - {fileID: 3719853733944773630, guid: 4a0b93cce3832344fa20cc3b3ae9bd32, type: 3}
   _solidLayers:
     serializedVersion: 2
     m_Bits: 4197376

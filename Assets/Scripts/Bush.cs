@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Bush : MonoBehaviour, IInteractable
 {
 
-    [SerializeField] private GameObject _bushPrefab;
+    [SerializeField] private GameObject[] _bushPrefab;
     [SerializeField] private LayerMask _solidLayers, _bushLayers;
     [SerializeField] private bool _reinforced;
     [SerializeField] private Transform _restingOn;
@@ -67,7 +68,7 @@ public class Bush : MonoBehaviour, IInteractable
     private void OnWater()
     {
         var space = CheckForSpaceAbove();
-        if (space.HasValue) Instantiate(_bushPrefab, space.Value, Quaternion.identity);
+        if (space.HasValue) Instantiate(_bushPrefab[Random.Range(0, _bushPrefab.Length)], space.Value, Quaternion.identity);
     }
 
     private Vector3? CheckForSpaceAbove()
