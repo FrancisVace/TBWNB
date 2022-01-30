@@ -8,17 +8,39 @@ public class Bush : MonoBehaviour, IInteractable
     [SerializeField] private GameObject _bushPrefab;
     [SerializeField] private LayerMask _solidLayers, _bushLayers;
     [SerializeField] private bool _reinforced;
+    [SerializeField] private Transform _restingOn;
+    private Vector3 _restingOffset;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        UpdateResting();
+    }
+
     void Update()
     {
         // y check to prevent infinite loop
-        while(transform.position.y > -100 && !Physics2D.OverlapPoint(
-                  transform.position + Vector3.down, 
-                  _solidLayers | _bushLayers))
+        if (_restingOn == null)
         {
-            transform.position += Vector3.down;
+            while(transform.position.y > -100 && !Physics2D.OverlapPoint(
+                      transform.position + Vector3.down, 
+                      _solidLayers | _bushLayers))
+            {
+                transform.position += Vector3.down;
+            }
+            UpdateResting();
         }
+        else
+        {
+            transform.position = _restingOn.position + _restingOffset;
+        }
+    }
+
+    private void UpdateResting()
+    {
+        var rest = Physics2D.OverlapPoint(transform.position + Vector3.down, 
+            _solidLayers | _bushLayers);
+        if (rest) _restingOn = rest.transform;
+        _restingOffset = transform.position - _restingOn.position;
     }
 
     public void Interact(Element element)
