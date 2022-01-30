@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 422868937252403062}
   - component: {fileID: 2224918603234065830}
   m_Layer: 20
-  m_Name: Bush
+  m_Name: Bush Flowery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bushPrefab:
-  - {fileID: 3719853733944773630, guid: 4a0b93cce3832344fa20cc3b3ae9bd32, type: 3}
+  - {fileID: 3719853733944773630, guid: e163e99ccc815104cb9583a7f82322c3, type: 3}
   - {fileID: 3719853733944773630}
   _solidLayers:
     serializedVersion: 2
@@ -137,7 +137,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 0a9c0fff5b1f60b4880e7918bd94690f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d449303a7119da34ca2dec9a7420e5c2, type: 2}
+      objectReference: {fileID: 2100000, guid: 50aed55b4f094194b94e359a8765a148, type: 2}
     - target: {fileID: 919132149155446097, guid: 0a9c0fff5b1f60b4880e7918bd94690f, type: 3}
       propertyPath: m_Name
       value: Bush01
