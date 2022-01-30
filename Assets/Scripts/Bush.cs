@@ -7,6 +7,7 @@ public class Bush : MonoBehaviour, IInteractable
 
     [SerializeField] private GameObject _bushPrefab;
     [SerializeField] private LayerMask _solidLayers, _bushLayers;
+    [SerializeField] private bool _reinforced;
 
     // Update is called once per frame
     void Update()
@@ -37,6 +38,7 @@ public class Bush : MonoBehaviour, IInteractable
 
     private void OnFire()
     {
+        if (_reinforced) return;
         Destroy(gameObject);
     }
 
